@@ -47,6 +47,7 @@ FROM martenseemann/quic-network-simulator-endpoint:latest
 
 COPY --from=builder /usr/sbin/nginx /usr/sbin/
 COPY --from=builder /etc/nginx /etc/nginx
+COPY --from=builder /usr/local/lib/* /usr/local/lib
 
 RUN useradd nginx
 RUN mkdir -p /var/cache/nginx /var/log/nginx/
