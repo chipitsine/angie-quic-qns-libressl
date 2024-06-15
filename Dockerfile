@@ -9,8 +9,6 @@ RUN useradd nginx
 RUN git clone https://github.com/libressl/portable
 RUN cd portable && ./autogen.sh && ./configure && make dist && tar xvf libressl-* && cd libressl-* && ./configure && make -j$(nproc) && make install
 
-RUN cp /usr/local/lib/libssl.so.* /usr/local/lib/libcrypto.so.* /lib64
-
 RUN git clone https://github.com/webserver-llc/angie nginx
 
 RUN cd nginx && \
@@ -47,7 +45,8 @@ FROM martenseemann/quic-network-simulator-endpoint:latest
 
 COPY --from=builder /usr/sbin/nginx /usr/sbin/
 COPY --from=builder /etc/nginx /etc/nginx
-COPY --from=builder /usr/local/lib/* /usr/local/lib
+COPY --from=builder /usr/local/lib/libssl.so.* /lib/x86_64-linux-gnu
+COPY --from=builder /usr/local/lib/libcrypto.so.* /lib/x86_64-linux-gnu
 
 RUN useradd nginx
 RUN mkdir -p /var/cache/nginx /var/log/nginx/
