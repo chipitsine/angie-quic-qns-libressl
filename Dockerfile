@@ -9,6 +9,8 @@ RUN useradd nginx
 RUN git clone https://github.com/libressl/portable
 RUN cd portable && ./autogen.sh && ./configure && make dist && tar xvf libressl-* && cd libressl-* && ./configure && make -j$(nproc) && make install
 
+RUN cp /usr/local/lib/libssl.so.* /usr/local/lib/libcrypto.so.* /lib64
+
 RUN git clone https://github.com/webserver-llc/angie nginx
 
 RUN cd nginx && \
